@@ -5,7 +5,7 @@ import Map from "./components/Map";
 
 function App() {
   return (
-    <div className=" ">
+    <div>
       <NavigationBar />
 
       <h1 className="text-8xl text-white font-bold mx-auto flex flex-col items-center mt-12 mb-2">
