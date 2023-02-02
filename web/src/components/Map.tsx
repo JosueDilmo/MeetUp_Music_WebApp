@@ -1,5 +1,5 @@
 import "../styles/main.css";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useCallback, useMemo, useRef } from "react";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -21,7 +21,7 @@ function Map() {
   );
   // Callback to set the map instance
   // TODO:FIXME: Parameter 'map' implicitly has an 'any' type.ts(7006)
-  const onLoad = useCallback((map) => (mapRef.current = map), []);
+  const onLoad = useCallback((map: any) => (mapRef.current = map), []);
 
   const { isLoaded } = useLoadScript({
     //TODO:FIXME: Replace this with PROCESS.ENV.GOOGLE_MAPS_API_KEY
@@ -41,7 +41,9 @@ function Map() {
       mapContainerClassName=" w-[60%] h-[512px] justify-center mx-auto rounded-xl mt-12 mb-12"
       options={options}
       onLoad={onLoad}
-    />
+    >
+      {/* TODO:FIXME: Add markers */}
+    </GoogleMap>
   );
 }
 
