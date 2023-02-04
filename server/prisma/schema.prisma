@@ -10,21 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   userId String @id @default(uuid())
   name   String
 
-  Events Events[]
+  events Events[]
 }
 
 model Events {
   eventId   String   @id @default(uuid())
   ownerId   String
-  joinedId  String?
+  joinedId  String
   latitude  Float
   longitude Float
   createdAt DateTime @default(now())
-  duration  Int
+  hourStart Int
+  hourEnd   Int
 
-  user Users @relation(fields: [ownerId], references: [userId])
+  user User @relation(fields: [ownerId], references: [userId])
 }

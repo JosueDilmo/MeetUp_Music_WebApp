@@ -1,4 +1,3 @@
-
 /*
 // API RESTful
 
@@ -24,59 +23,116 @@
 *5: Erros no servidor
 */
 
-import express from 'express'
-import { PrismaClient } from '@prisma/client'
+import express from "express";
+import { PrismaClient } from "@prisma/client";
+import { convertHourStringToMinutes } from "./utils/convertHourStringToMinutes";
+import { convertMinutesToHourString } from "./utils/convertMinutesToHourString";
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
 const prisma = new PrismaClient({
-    log: ['query']
-})
+  log: ["query"],
+});
 
 // ROUTES
 
-/* GET ALL EVENTS */
-app.get('/events', async (request, response) => {
-    const events = await prisma.events.findMany({
-        // include: {
-        //     user: true,
-        // }
- 
+/* GET ALL EVENTS IN LANDING PAGE*/
+// TODO: JUST THE LATITUDE AND LONGITUDE OF THE EVENTS
+app.get("/home", async (request, response) => {
+  const events = await prisma.events.findMany({});
+
+  return response.status(201).json(events);
+});
+
+/* GET ALL EVENTS HAPPENING NOW */
+app.get("/happening-now", async (request, response) => {
+  const events = await prisma.events.findMany({
+    select: {
+      ownerId: true,
+      joinedId: true,
+      latitude: true,
+      longitude: true,
+      hourStart: true,
+      hourEnd: true,
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  return response.status(201).json(
+    events.map((event) => {
+      return {
+        ...event,
+        joinedId: event.joinedId.split(","),
+        hourStart: convertMinutesToHourString(event.hourStart),
+        hourEnd: convertMinutesToHourString(event.hourEnd),
+      };
     })
-    
-    return response.json(events)
-    })
+  );
+});
+
+// Create a new event
+app.post("/create/:id", async (request, response) => {
+  const userId: any = request.params.id;
+  const { latitude, longitude, hourStart, hourEnd }: any = request.body;
+
+  const createdEvent = await prisma.events.create({
+    data: {
+      ownerId: userId,
+      joinedId: userId,
+      latitude: latitude,
+      longitude: longitude,
+      hourStart: convertHourStringToMinutes(hourStart),
+      hourEnd: convertHourStringToMinutes(hourEnd),
+    },
+  });
+  return response.status(201).json(createdEvent);
+});
+
+// Route to join an event by id and add new user ID to joinedId keeping the previous ones
+app.put("/join-event/:id", async (request, response) => {
+  const eventId: any = request.params.id;
+  const { userId }: any = request.body;
+
+  const event = await prisma.events.findUniqueOrThrow({
+    where: {
+      eventId: eventId,
+    },
+  });
+  const joinedIds = event.joinedId;
+
+  const newIdToJoin = await prisma.events.update({
+    where: {
+      eventId: eventId,
+    },
+    data: {
+      joinedId: joinedIds + "," + userId,
+    },
+  });
+  return response.status(201).json(newIdToJoin);
+});
 
 /* GET ALL USERS */
-app.get('/users', async (request, response) => {
-    const users = await prisma.users.findMany({
-    })
+app.get("/users", async (request, response) => {
+  const users = await prisma.user.findMany({});
 
-    return response.json(users)
-    })
+  return response.json(users);
+});
 
+/* GET USER name BY ID */
 
-/* ADD ONE EVENT */
-app.post('/user/:id/events', async (request, response) => {
-    const userId: any = request.params.id
-    const body = request.body
+app.get("/user-name", async (request, response) => {
+  const users = await prisma.user.findMany({
+    select: {
+      userId: true,
+      name: true,
+    },
+  });
+  return response.json(users);
+});
 
-    const event = await prisma.events.create({
-        data: {
-            ownerId: String(userId),
-            joinedId: body.joinedId,
-            latitude: body.latitude,
-            longitude: body.longitude,
-            duration: body.duration,
-        }
-    })
-
-    return response.status(201).json(event)
-    })
-
-        
-
-
-
-app.listen(3333)
+app.listen(3333);
