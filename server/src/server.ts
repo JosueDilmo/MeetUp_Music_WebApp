@@ -49,6 +49,7 @@ app.get("/home", async (request, response) => {
 app.get("/happening-now", async (request, response) => {
   const events = await prisma.events.findMany({
     select: {
+      eventId: true,
       ownerId: true,
       joinedId: true,
       latitude: true,
@@ -78,12 +79,13 @@ app.get("/happening-now", async (request, response) => {
 // Create a new event
 app.post("/create/:id", async (request, response) => {
   const userId: any = request.params.id;
-  const { latitude, longitude, hourStart, hourEnd }: any = request.body;
+  const { joinedId, latitude, longitude, hourStart, hourEnd }: any =
+    request.body;
 
   const createdEvent = await prisma.events.create({
     data: {
       ownerId: userId,
-      joinedId: userId,
+      joinedId: joinedId,
       latitude: latitude,
       longitude: longitude,
       hourStart: convertHourStringToMinutes(hourStart),
@@ -96,24 +98,33 @@ app.post("/create/:id", async (request, response) => {
 // Route to join an event by id and add new user ID to joinedId keeping the previous ones
 app.put("/join-event/:id", async (request, response) => {
   const eventId: any = request.params.id;
-  const { userId }: any = request.body;
+  const userId: any = request.body.userId;
 
-  const event = await prisma.events.findUniqueOrThrow({
+  const eventToJoin = await prisma.events.findUniqueOrThrow({
     where: {
       eventId: eventId,
     },
   });
-  const joinedIds = event.joinedId;
+  const joinedIds = eventToJoin.joinedId;
 
-  const newIdToJoin = await prisma.events.update({
+  const updateEvent = await prisma.events.update({
     where: {
       eventId: eventId,
     },
     data: {
-      joinedId: joinedIds + "," + userId,
+      joinedId: userId + "," + joinedIds,
     },
+
+    // const updateIds = await prisma.events.update({
+    //   where: {
+    //     eventId: eventToJoin.eventId,
+    //   },
+    //   data: {
+    //     joinedId: joinedIds + "," + userId,
+    //   },
   });
-  return response.status(201).json(newIdToJoin);
+
+  return response.status(201).json(updateEvent);
 });
 
 /* GET ALL USERS */
