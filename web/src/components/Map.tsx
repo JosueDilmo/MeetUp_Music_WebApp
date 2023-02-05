@@ -1,12 +1,27 @@
 import "../styles/main.css";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
+type eventsFromDatabase = {
+  eventId: string;
+  latitude: number;
+  longitude: number;
+};
 
-function Map() {
+export default function Map() {
+  const [events, setEvents] = useState<eventsFromDatabase[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3333/get-events")
+      .then((response) => response.json())
+      .then((data) => setEvents(data));
+  }, []);
+
+  console.log(events);
+
   // Reference to the map instance
   const mapRef = useRef<GoogleMap>();
   // Set the center of the map at Dublin
@@ -27,7 +42,6 @@ function Map() {
     //TODO:FIXME: Replace this with PROCESS.ENV.GOOGLE_MAPS_API_KEY
     // process.env.GOOGLE_MAPS_API_KEY,
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
   });
 
   if (!isLoaded) {
@@ -42,9 +56,16 @@ function Map() {
       options={options}
       onLoad={onLoad}
     >
+      {events.map((event) => {
+        return (
+          <Marker
+            key={event.eventId}
+            position={{ lat: event.latitude, lng: event.longitude }}
+          />
+        );
+      })}
+
       {/* TODO:FIXME: Add markers */}
     </GoogleMap>
   );
 }
-
-export default Map;

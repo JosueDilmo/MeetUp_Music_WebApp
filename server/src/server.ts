@@ -24,12 +24,14 @@
 */
 
 import express from "express";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import { convertHourStringToMinutes } from "./utils/convertHourStringToMinutes";
 import { convertMinutesToHourString } from "./utils/convertMinutesToHourString";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const prisma = new PrismaClient({
   log: ["query"],
@@ -37,11 +39,17 @@ const prisma = new PrismaClient({
 
 // ROUTES
 
-/* GET ALL EVENTS IN LANDING PAGE*/
-// TODO: JUST THE LATITUDE AND LONGITUDE OF THE EVENTS
-app.get("/home", async (request, response) => {
-  const events = await prisma.events.findMany({});
+/* GET ALL EVENTS to be display on the LANDING PAGE*/
+app.get("/get-events", async (request, response) => {
+  const events = await prisma.events.findMany({
+    select: {
+      eventId: true,
+      latitude: true,
+      longitude: true,
+    },
+  });
 
+  // TODO: JUST THE LATITUDE AND LONGITUDE OF THE EVENTS
   return response.status(201).json(events);
 });
 
@@ -82,6 +90,7 @@ app.post("/create/:id", async (request, response) => {
   const { joinedId, latitude, longitude, hourStart, hourEnd }: any =
     request.body;
 
+  //TODO: joinedId should be empty when creating a new event
   const createdEvent = await prisma.events.create({
     data: {
       ownerId: userId,
@@ -96,6 +105,7 @@ app.post("/create/:id", async (request, response) => {
 });
 
 // Route to join an event by id and add new user ID to joinedId keeping the previous ones
+//TODO: validate if the user is already in the event
 app.put("/join-event/:id", async (request, response) => {
   const eventId: any = request.params.id;
   const userId: any = request.body.userId;
@@ -114,14 +124,6 @@ app.put("/join-event/:id", async (request, response) => {
     data: {
       joinedId: userId + "," + joinedIds,
     },
-
-    // const updateIds = await prisma.events.update({
-    //   where: {
-    //     eventId: eventToJoin.eventId,
-    //   },
-    //   data: {
-    //     joinedId: joinedIds + "," + userId,
-    //   },
   });
 
   return response.status(201).json(updateEvent);
@@ -135,7 +137,7 @@ app.get("/users", async (request, response) => {
 });
 
 /* GET USER name BY ID */
-
+//TODO: find a way to get the user name by id
 app.get("/user-name", async (request, response) => {
   const users = await prisma.user.findMany({
     select: {
