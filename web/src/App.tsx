@@ -1,7 +1,7 @@
 import "./styles/main.css";
 import NavigationBar from "./components/TopNavBar";
 import Footer from "./components/MainFooter";
-import Map from "./components/Map";
+import MapWithMarkers from "./components/DisplayMarkers";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
           Sign up
         </button>
       </div>
-      <Map />
+      <MapWithMarkers />
 
       <Footer />
     </div>

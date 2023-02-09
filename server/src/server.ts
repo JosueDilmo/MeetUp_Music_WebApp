@@ -30,15 +30,17 @@ import { convertHourStringToMinutes } from "./utils/convertHourStringToMinutes";
 import { convertMinutesToHourString } from "./utils/convertMinutesToHourString";
 
 const app = express();
+// json() => middleware
 app.use(express.json());
+// CORS - Cross Origin Resource Sharing
 app.use(cors());
 
 const prisma = new PrismaClient({
+  // Log all prisma client queries to the console
   log: ["query"],
 });
 
 // ROUTES
-
 /* GET ALL EVENTS to be display on the LANDING PAGE*/
 app.get("/get-events", async (request, response) => {
   const events = await prisma.events.findMany({
@@ -48,8 +50,6 @@ app.get("/get-events", async (request, response) => {
       longitude: true,
     },
   });
-
-  // TODO: JUST THE LATITUDE AND LONGITUDE OF THE EVENTS
   return response.status(201).json(events);
 });
 

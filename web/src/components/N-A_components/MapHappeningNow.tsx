@@ -11,14 +11,16 @@ type eventsFromDatabase = {
   longitude: number;
 };
 
-export default function Map() {
+export default function MapHappeningNow() {
   const [events, setEvents] = useState<eventsFromDatabase[]>([]);
+  const [lat, setLat] = useState<number>();
+  const [lng, setLng] = useState<number>();
 
-  useEffect(() => {
-    fetch("http://localhost:3333/get-events")
-      .then((response) => response.json())
-      .then((data) => setEvents(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:3333/get-events")
+  //     .then((response) => response.json())
+  //     .then((data) => setEvents(data));
+  // }, []);
 
   console.log(events);
 
@@ -40,7 +42,7 @@ export default function Map() {
 
   const { isLoaded } = useLoadScript({
     //TODO:FIXME: Replace this with PROCESS.ENV.GOOGLE_MAPS_API_KEY
-    // process.env.GOOGLE_MAPS_API_KEY,
+    // process.env.GOOGLE_MAPS_API_KEY
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
   });
 
@@ -55,6 +57,15 @@ export default function Map() {
       mapContainerClassName=" w-[60%] h-[512px] justify-center mx-auto rounded-xl mt-12 mb-12"
       options={options}
       onLoad={onLoad}
+      onClick={(e) => {
+        setLat(e.latLng?.lat()), setLng(e.latLng?.lng());
+        {
+          // Console log the lat and lng of the clicked location on the map for debugging purposes
+          // TODO:FIXME: PASS THIS TO THE BACKEND TO ADD TO THE DATABASE AND RENDER THE MARKER
+          // TODO: CREATE A FORM MODAL/ COMPONENT TO ADD THE EVENT TO THE DATABASE
+          console.log(lat, lng);
+        }
+      }}
     >
       {events.map((event) => {
         return (

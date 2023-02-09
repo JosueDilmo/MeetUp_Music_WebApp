@@ -1,7 +1,7 @@
 import "../styles/main.css";
-import NavigationBar from "./TopNavBar";
-import Footer from "./MainFooter";
-import Map from "./Map";
+import NavigationBar from "../TopNavBar";
+import Footer from "../MainFooter";
+import Map from "./MapHappeningNow";
 import DisplayEvents from "./DisplayEvents";
 
 function HappeningNow() {

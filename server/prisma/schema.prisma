@@ -17,8 +17,8 @@ model Events {
   eventId   String   @id @default(uuid())
   ownerId   String
   joinedId  String
-  latitude  Decimal
-  longitude Decimal
+  latitude  Float
+  longitude Float
   createdAt DateTime @default(now())
   hourStart Int
   hourEnd   Int
