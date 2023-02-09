@@ -2,6 +2,7 @@ import "./styles/main.css";
 import NavigationBar from "./components/TopNavBar";
 import Footer from "./components/MainFooter";
 import MapWithMarkers from "./components/DisplayMarkers";
+import DisplayEvents from "./components/DisplayEvents";
 
 function App() {
   return (
@@ -28,7 +29,10 @@ function App() {
           Sign up
         </button>
       </div>
-      <MapWithMarkers />
+      <div className="flex">
+        <DisplayEvents />
+        <MapWithMarkers />
+      </div>
 
       <Footer />
     </div>

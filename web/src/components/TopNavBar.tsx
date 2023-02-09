@@ -1,5 +1,6 @@
 import "../styles/main.css";
 import logomMiniImg from "../assets/min_logo.svg";
+import HappeningNow from "./HappeningNow";
 
 function NavigationBar() {
   return (

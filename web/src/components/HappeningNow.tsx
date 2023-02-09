@@ -1,7 +1,7 @@
 import "../styles/main.css";
-import NavigationBar from "../TopNavBar";
-import Footer from "../MainFooter";
-import Map from "./MapHappeningNow";
+import NavigationBar from "./TopNavBar";
+import Footer from "./MainFooter";
+import DisplayMarkers from "./DisplayMarkers";
 import DisplayEvents from "./DisplayEvents";
 
 function HappeningNow() {
@@ -9,7 +9,7 @@ function HappeningNow() {
     <div>
       <NavigationBar />
       <DisplayEvents />
-      <Map />
+      <DisplayMarkers />
       <Footer />
     </div>
   );
