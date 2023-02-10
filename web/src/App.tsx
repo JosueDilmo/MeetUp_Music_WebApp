@@ -6,6 +6,9 @@ import DisplayEvents from "./components/DisplayEvents";
 import * as Dialog from "@radix-ui/react-dialog";
 
 function App() {
+  // HARD way aka "correct" way
+  // Get the events from the database THEN pass to the components
+
   return (
     <div>
       <NavigationBar />
@@ -30,7 +33,9 @@ function App() {
         </button>
       </div>
       <div className="flex">
-        <DisplayEvents />
+        <div className="overflow-auto h-[512px] w-auto mt-12 mb-12 ml-auto flex items-center flex-col pr-1">
+          <DisplayEvents />
+        </div>
         <MapWithMarkers />
       </div>
       <Footer />

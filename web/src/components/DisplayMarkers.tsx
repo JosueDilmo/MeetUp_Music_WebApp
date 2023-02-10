@@ -3,13 +3,13 @@ import {
   GoogleMap,
   InfoWindow,
   MarkerF,
-  OverlayView,
   useLoadScript,
 } from "@react-google-maps/api";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Spinner } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
+import DisplayEvents from "./DisplayEvents";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
@@ -50,7 +50,7 @@ function DisplayMarkers() {
   // Load the map
   const { isLoaded } = useLoadScript({
     //FIXME: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
+    googleMapsApiKey: GoogleApiKey,
   });
 
   // If the map is not loaded, show a spinner
@@ -62,7 +62,7 @@ function DisplayMarkers() {
     <GoogleMap
       zoom={15}
       center={center}
-      mapContainerClassName="w-[60%] h-[512px] mx-auto rounded-xl mt-12 mb-12"
+      mapContainerClassName="w-[60%] h-[512px] rounded-xl mt-12 mb-12 mx-auto"
       options={options}
       onClick={(event) => {
         const coordinates = {
@@ -104,9 +104,35 @@ function DisplayMarkers() {
             <Dialog.Trigger>Add event?</Dialog.Trigger>
             <Dialog.Portal>
               <Dialog.Overlay className=" bg-black/60 inset-0 fixed" />
-              <Dialog.Content>
-                <Dialog.Title>Add Your Event</Dialog.Title>
-                <Dialog.Content>CREATE YOUR EVENT</Dialog.Content>
+              <Dialog.Content className="bg-gray-900 text-white fixed py-8 px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg">
+                <Dialog.Title className="text-3xl font-black">
+                  Create your event
+                </Dialog.Title>
+                <Dialog.Content>
+                  <form>
+                    <div>
+                      <label htmlFor="hourStart">
+                        Introduce the duration of the event:
+                      </label>
+                      <div>
+                        <input
+                          id="hourStart"
+                          type="time"
+                          placeholder="Start"
+                        ></input>
+                        <input
+                          id="hourEnd"
+                          type="time"
+                          placeholder="End"
+                        ></input>
+                      </div>
+                    </div>
+                    <footer>
+                      <button>Cancel</button>
+                      <button type="submit">Start Busking</button>
+                    </footer>
+                  </form>
+                </Dialog.Content>
               </Dialog.Content>
             </Dialog.Portal>
           </Dialog.Root>
