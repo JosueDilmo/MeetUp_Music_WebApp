@@ -3,12 +3,12 @@ import NavigationBar from "./components/TopNavBar";
 import Footer from "./components/MainFooter";
 import MapWithMarkers from "./components/DisplayMarkers";
 import DisplayEvents from "./components/DisplayEvents";
+import * as Dialog from "@radix-ui/react-dialog";
 
 function App() {
   return (
     <div>
       <NavigationBar />
-
       <h1 className="text-8xl text-white font-bold mx-auto flex flex-col items-center mt-12 mb-2">
         IntMus
       </h1>
@@ -33,7 +33,6 @@ function App() {
         <DisplayEvents />
         <MapWithMarkers />
       </div>
-
       <Footer />
     </div>
   );
