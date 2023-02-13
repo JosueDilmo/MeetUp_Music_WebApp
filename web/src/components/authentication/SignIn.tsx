@@ -12,6 +12,7 @@ export default function SignIn() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         console.log(userCredentials);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -31,7 +32,9 @@ export default function SignIn() {
         <Dialog.Content className="bg-gray-900 text-white fixed px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl">
           <div className="flex flex-1 items-center justify-center">
             <div className="rounded-lg px-4 py-16 text-center">
-              <form className="text-center">
+              <form className="text-center"
+                onSubmit={handgleSignIn}
+              >
                 <h1 className="font-bold tracking-wider text-3xl mb-8 w-full text-white">
                   Sign in
                 </h1>
@@ -57,12 +60,10 @@ export default function SignIn() {
                   <button
                     type="submit"
                     className="border-2 border-gray-100 focus:outline-none bg-purple-600 text-white font-bold tracking-wider block w-full p-2 rounded-lg focus:border-gray-700 hover:bg-purple-700"
-                    onClick={(e) => handgleSignIn(e)}
                   >
                     Sign In
                   </button>
                 </div>
-              </form>
               <div className="text-center">
                 <a href="#" className="hover:underline">
                   Forgot password?
@@ -73,10 +74,11 @@ export default function SignIn() {
                 <a
                   href="#"
                   className="text-md text-indigo-600 underline font-semibold hover:text-indigo-800"
-                >
+                  >
                   Create One
                 </a>
               </div>
+              </form>
             </div>
           </div>
         </Dialog.Content>

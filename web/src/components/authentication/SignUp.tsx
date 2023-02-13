@@ -9,24 +9,35 @@ import { useState } from "react";
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [profession, setProfession] = useState("");
   const [userId, setUserId] = useState("");
+  
+  
+  function checkPassword(e: any){
+    if (password !== passwordConfirm) {
+      alert("Passwords do not match");
+      e.preventDefault();
+    } else {
+      handleSignUp(e);
+    }
+  }
 
-  const handgleSignUp = (event: any) => {
+  const handleSignUp = async (event: any) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then ((userCredentials) => {
         console.log("User created successfully" + userCredentials);
         setUserId(userCredentials.user.uid);
-        console.log("User id is: " + userId);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-
+    };
+    
   return (
     <Dialog.Root>
       <Dialog.Trigger
@@ -44,7 +55,9 @@ export default function SignUp() {
               Please fill in your information to continue.
             </span>
             <div className="w-11/12 p-8 bg-white rounded-lg">
-              <form className="mt-4">
+              <form className="mt-1"
+                onSubmit={(e) => checkPassword(e)}
+              >
                 <div className="flex justify-between gap-3">
                   <span className="w-1/2">
                     <label
@@ -131,6 +144,7 @@ export default function SignUp() {
                   autoComplete="new-password"
                   className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
                   required
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <label
                   htmlFor="password-confirm"
@@ -146,6 +160,7 @@ export default function SignUp() {
                   autoComplete="new-password"
                   className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
                   required
+                  onChange={(e) => setPasswordConfirm(e.target.value)}
                 />
                 <button
                   type="submit"
@@ -164,3 +179,4 @@ export default function SignUp() {
     </Dialog.Root>
   );
 }
+
