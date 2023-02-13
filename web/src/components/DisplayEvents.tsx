@@ -16,7 +16,7 @@ function DisplayEvents() {
 
   return (
     <div>
-      <div className="break-inside relative overflow-hidden flex flex-col justify-between space-y-3 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-white text-black dark:bg-slate-800 dark:text-white">
+      <div className="break-inside relative overflow-hidden flex flex-col justify-between space-y-3 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-slate-800 text-white">
         <div className="flex flex-row items-center space-x-3">
           <div className="flex flex-none items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white">
             <svg
@@ -26,9 +26,9 @@ function DisplayEvents() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <polygon points="14 2 18 6 7 17 3 17 3 13 14 2" />
               <line x1="3" y1="22" x2="21" y2="22" />
@@ -94,9 +94,9 @@ function DisplayEvents() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M5 12h13M12 5l7 7-7 7" />
             </svg>

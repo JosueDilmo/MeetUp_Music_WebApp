@@ -1,9 +1,9 @@
 import "./styles/main.css";
-import NavigationBar from "./components/TopNavBar";
-import Footer from "./components/MainFooter";
+import TopNavBar from "./components/navigation/TopNavBar";
+import Footer from "./components/navigation/Footer";
 import MapWithMarkers from "./components/DisplayMarkers";
 import DisplayEvents from "./components/DisplayEvents";
-import * as Dialog from "@radix-ui/react-dialog";
+import SignUp from "./components/authentication/SignUp";
 
 function App() {
   // HARD way aka "correct" way
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div>
-      <NavigationBar />
+      <TopNavBar />
       <h1 className="text-8xl text-white font-bold mx-auto flex flex-col items-center mt-12 mb-2">
         IntMus
       </h1>
@@ -25,12 +25,7 @@ function App() {
         >
           Learn more
         </button>
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-bold rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Sign up
-        </button>
+        <SignUp />
       </div>
       <div className="flex">
         <div className="overflow-auto h-[512px] w-auto mt-12 mb-12 ml-auto flex items-center flex-col pr-1">
