@@ -8,8 +8,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Spinner } from "phosphor-react";
-import * as Dialog from "@radix-ui/react-dialog";
-import DisplayEvents from "./DisplayEvents";
 import CreateEvent from "./CreateEvent";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -90,6 +88,7 @@ function DisplayMarkers() {
         position={event}
         onClick={() => {
           setOpen(true);
+          console.log(event);
         }}
       />
       {/* Open InfoWindow when user clicks on the marker */}
@@ -101,7 +100,7 @@ function DisplayMarkers() {
           }}
         >
           {/* Modal for creating an event */}
-          <CreateEvent />
+          <CreateEvent {...event} />
         </InfoWindow>
       )}
     </GoogleMap>

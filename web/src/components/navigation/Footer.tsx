@@ -1,6 +1,5 @@
 import "../../styles/main.css";
 import intmusLogo from "../../assets/logo.svg";
-import SignIn from "../authentication/SignIn";
 
 function Footer() {
   return (
@@ -10,9 +9,9 @@ function Footer() {
           <img src={intmusLogo} className="h-40 mr-3" alt="IntmUS Logo" />
         </a>
         <ul className="flex flex-col p-4 mt-4 border bg-gray-900 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-gray-900 dark:bg-gray-900 md:dark:bg-gray-900">
-          <li>
+          {/* <li>
             <SignIn />
-          </li>
+          </li> */}
           <li>
             <a
               href="#"

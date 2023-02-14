@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { useState } from "react";
+import axios from "axios";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -13,10 +14,8 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [profession, setProfession] = useState("");
-  const [userId, setUserId] = useState("");
-  
-  
-  function checkPassword(e: any){
+
+  function checkPassword(e: any) {
     if (password !== passwordConfirm) {
       alert("Passwords do not match");
       e.preventDefault();
@@ -28,16 +27,34 @@ export default function SignUp() {
   const handleSignUp = async (event: any) => {
     event.preventDefault();
     await createUserWithEmailAndPassword(auth, email, password)
-      .then ((userCredentials) => {
-        console.log("User created successfully" + userCredentials);
-        setUserId(userCredentials.user.uid);
-        window.location.reload();
+      .then((userCredentials) => {
+        alert(
+          "User created successfully" +
+            userCredentials.user.email +
+            " " +
+            userCredentials.user.uid
+        );
+        createUserInDatabase(userCredentials.user.uid, event);
       })
       .catch((error) => {
         console.log(error);
       });
-    };
-    
+  };
+
+  const createUserInDatabase = async (userId: string, e: any) => {
+    e.preventDefault();
+    await axios
+      .post(`http://localhost:3333/create-user/${userId}`, {
+        firstName: firstName,
+        lastName: lastName,
+        profession: profession,
+      })
+      .then((response) => {
+        console.log(response);
+        window.location.reload();
+      });
+  };
+
   return (
     <Dialog.Root>
       <Dialog.Trigger
@@ -48,16 +65,14 @@ export default function SignUp() {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className=" bg-black/70 inset-0 fixed" />
-        <Dialog.Content className="bg-gray-900 text-white fixed px-10 top-[800px] left-1/2 -translate-x-1/2 -translate-y-[800px] rounded-xl">
-          <div className="grid min-h-screen place-items-center">
+        <Dialog.Content className="bg-gray-900 text-white fixed px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl">
+          <div className="grid h-[700px] mt-6 place-items-center">
             <span className="text-3xl font-black">Create your account</span>
             <span className="text-xl font-regular ">
               Please fill in your information to continue.
             </span>
             <div className="w-11/12 p-8 bg-white rounded-lg">
-              <form className="mt-1"
-                onSubmit={(e) => checkPassword(e)}
-              >
+              <form className="mt-1" onSubmit={(e) => checkPassword(e)}>
                 <div className="flex justify-between gap-3">
                   <span className="w-1/2">
                     <label
@@ -164,7 +179,7 @@ export default function SignUp() {
                 />
                 <button
                   type="submit"
-                  className="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
+                  className="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-blue-700 hover:bg-blue-800 shadow-lg focus:outline-none hover:shadow-none"
                 >
                   Sign up
                 </button>
@@ -179,4 +194,3 @@ export default function SignUp() {
     </Dialog.Root>
   );
 }
-

@@ -12,20 +12,18 @@ model User {
   firstName  String
   lastName   String
   profession String
-  email      String @unique
-  password   String
 
   events Events[]
 }
 
 model Events {
-  eventId    String   @id @default(uuid())
-  ownerId    String
-  joinedName String
-  latitude   Float
-  longitude  Float
-  createdAt  DateTime @default(now())
-  hourStart  Int
-  hourEnd    Int
-  user       User     @relation(fields: [ownerId], references: [userId])
+  eventId   String   @id @default(uuid())
+  ownerId   String
+  joinedId  String?
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  hourStart Int
+  hourEnd   Int
+  user      User     @relation(fields: [ownerId], references: [userId])
 }

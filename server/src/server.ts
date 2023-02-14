@@ -66,7 +66,8 @@ app.get("/happening-now", async (request, response) => {
       hourEnd: true,
       user: {
         select: {
-          name: true,
+          firstName: true,
+          lastName: true,
         },
       },
     },
@@ -76,7 +77,7 @@ app.get("/happening-now", async (request, response) => {
     events.map((event) => {
       return {
         ...event,
-        joinedId: event.joinedId.split(","),
+        joinedId: event.joinedId?.split(","),
         hourStart: convertMinutesToHourString(event.hourStart),
         hourEnd: convertMinutesToHourString(event.hourEnd),
       };
@@ -85,16 +86,14 @@ app.get("/happening-now", async (request, response) => {
 });
 
 // Create a new event
-app.post("/create/:id", async (request, response) => {
+app.post("/create-event/:id", async (request, response) => {
   const userId: any = request.params.id;
-  const { joinedId, latitude, longitude, hourStart, hourEnd }: any =
-    request.body;
+  const { latitude, longitude, hourStart, hourEnd }: any = request.body;
 
   //TODO: joinedId should be empty when creating a new event
   const createdEvent = await prisma.events.create({
     data: {
       ownerId: userId,
-      joinedId: joinedId,
       latitude: latitude,
       longitude: longitude,
       hourStart: convertHourStringToMinutes(hourStart),
@@ -110,42 +109,60 @@ app.put("/join-event/:id", async (request, response) => {
   const eventId: any = request.params.id;
   const userId: any = request.body.userId;
 
-  const eventToJoin = await prisma.events.findUniqueOrThrow({
-    where: {
-      eventId: eventId,
-    },
+  const eventToJoin = await prisma.events.findUnique({
+    where: { eventId },
   });
-  const joinedIds = eventToJoin.joinedId;
+  if (!eventToJoin) {
+    return response.status(404).json({ message: "Event not found" });
+  }
 
-  const updateEvent = await prisma.events.update({
-    where: {
-      eventId: eventId,
-    },
-    data: {
-      joinedId: userId + "," + joinedIds,
-    },
-  });
-
-  return response.status(201).json(updateEvent);
-});
-
-/* GET ALL USERS */
-app.get("/users", async (request, response) => {
-  const users = await prisma.user.findMany({});
-
-  return response.json(users);
+  if (eventToJoin.joinedId === null) {
+    const updatedNullEvent = await prisma.events.update({
+      where: { eventId },
+      data: {
+        joinedId: userId,
+      },
+    });
+    return response.status(201).json(updatedNullEvent);
+  } else {
+    const updatedEvent = await prisma.events.update({
+      where: { eventId },
+      data: {
+        joinedId: userId + "," + eventToJoin.joinedId,
+      },
+    });
+    return response.status(201).json(updatedEvent);
+  }
 });
 
 /* GET USER name BY ID */
 //TODO: find a way to get the user name by id
-app.get("/user-name", async (request, response) => {
-  const users = await prisma.user.findMany({
+app.get("/user-name/:id", async (request, response) => {
+  const userId: any = request.params.id;
+  const userName = await prisma.user.findUniqueOrThrow({
+    where: { userId },
     select: {
-      userId: true,
-      name: true,
+      firstName: true,
+      lastName: true,
     },
   });
-  return response.json(users);
+  return response.json(userName);
+});
+
+/* CREATE USER FROM FIREBASE */
+app.post("/create-user/:id", async (request, response) => {
+  const userId: any = request.params.id;
+  const { firstName, lastName, profession }: any = request.body;
+
+  const createdUser = await prisma.user.create({
+    data: {
+      userId: userId,
+      firstName: firstName,
+      lastName: lastName,
+      profession: profession,
+    },
+  });
+  return response.status(201).json(createdUser);
 });
 
 app.listen(3333);
