@@ -28,7 +28,7 @@ function App() {
         <SignUp />
       </div>
       <div className="flex">
-        <div className="overflow-auto h-[512px] w-auto mt-12 mb-12 ml-auto flex items-center flex-col pr-1">
+        <div className="overflow-auto no-scrollbar h-[512px] w-auto mt-12 ml-auto flex items-center flex-col">
           <DisplayEvents />
         </div>
         <MapWithMarkers />

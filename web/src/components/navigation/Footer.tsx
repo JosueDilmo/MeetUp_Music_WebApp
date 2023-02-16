@@ -1,7 +1,7 @@
 import "../../styles/main.css";
 import intmusLogo from "../../assets/logo.svg";
 
-function Footer() {
+const Footer = () => {
   return (
     <footer className="p-4 bg-gray-900 md:px-6 md:py-8 ">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -63,6 +63,6 @@ function Footer() {
       </span>
     </footer>
   );
-}
+};
 
 export default Footer;

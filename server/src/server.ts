@@ -64,6 +64,7 @@ app.get("/happening-now", async (request, response) => {
       longitude: true,
       hourStart: true,
       hourEnd: true,
+      createdAt: true,
       user: {
         select: {
           firstName: true,
@@ -78,6 +79,7 @@ app.get("/happening-now", async (request, response) => {
       return {
         ...event,
         joinedId: event.joinedId?.split(","),
+        createdAt: event.createdAt.toLocaleDateString(),
         hourStart: convertMinutesToHourString(event.hourStart),
         hourEnd: convertMinutesToHourString(event.hourEnd),
       };
@@ -142,6 +144,7 @@ app.get("/user-name/:id", async (request, response) => {
   const userName = await prisma.user.findUniqueOrThrow({
     where: { userId },
     select: {
+      userId: true,
       firstName: true,
       lastName: true,
     },

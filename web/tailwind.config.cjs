@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-//const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   content: [
@@ -18,12 +18,6 @@ module.exports = {
         lg: '976px',
         xl: '1440px',
       },
-      // colors: {
-      //   gray: colors.gray,
-      //   blue: colors.sky,
-      //   red: colors.rose,
-      //   pink: colors.fuchsia,
-      // },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
@@ -38,5 +32,18 @@ module.exports = {
       },
   },
 },
-  plugins: [],
+  plugins: [
+    plugin(function({ addUtilities }) {
+      addUtilities({
+        '.no-scrollbar::-webkit-scrollbar': {
+          display: 'none',
+        },
+        '.no-scrollbar': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+        },
+      })
+    }),
+          
+  ],
 }

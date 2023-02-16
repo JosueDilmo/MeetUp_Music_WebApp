@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 
-function TopNavBar() {
+const TopNavBar = () => {
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
@@ -91,6 +91,6 @@ function TopNavBar() {
       </div>
     </nav>
   );
-}
+};
 
 export default TopNavBar;

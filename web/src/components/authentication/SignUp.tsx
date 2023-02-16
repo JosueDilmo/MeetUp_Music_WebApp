@@ -1,13 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { useState } from "react";
 import axios from "axios";
 
-export default function SignUp() {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -193,4 +190,6 @@ export default function SignUp() {
       </Dialog.Portal>
     </Dialog.Root>
   );
-}
+};
+
+export default SignUp;

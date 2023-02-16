@@ -1,5 +1,4 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { MarkerF } from "@react-google-maps/api";
 import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -30,8 +29,8 @@ const CreateEvent = (event: LatLngLiteral) => {
       .post(`http://localhost:3333/create-event/${authUser}`, {
         hourStart: hourStart,
         hourEnd: hourEnd,
-        latitude: eventCoordinates.lat,
-        longitude: eventCoordinates.lng,
+        latitude: eventCoordinates?.lat,
+        longitude: eventCoordinates?.lng,
       })
       .then((response) => {
         console.log(response);
