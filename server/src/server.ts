@@ -1,28 +1,3 @@
-/*
-// API RESTful
-
-// Types of parameters
-* Query Params => Persistir estado (Filtros, Paginacao, Ordenacao, etc), definir estado, NAO usar informacao sensivel
- * nomear os parametros com ? para torna-los opcionais.
- * Routes Params => Accesar recursos, identificar recursos.
- * Body Params => Enviar informacao para criacao ou atualizacao de um registro, geralmente varias informacoes
- * {USAR PARA INFORMACAO SENSIVEL}
- 
-
-// HTTP methods
-*GET: Buscar ou listar uma informacao
-*POST: Criar alguma nova informacao
-*PUT: Atualizar/editar uma informacao existente
-*DELETE: Deletar uma informacao existente
-*PATCH: Alterar uma informacao especifica
-
-// HTTP Codes
-*2: Sucesso
-*3: Redirecionamento
-*4: Erros no cliente
-*5: Erros no servidor
-*/
-
 import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
@@ -30,13 +5,10 @@ import { convertHourStringToMinutes } from "./utils/convertHourStringToMinutes";
 import { convertMinutesToHourString } from "./utils/convertMinutesToHourString";
 
 const app = express();
-// json() => middleware
 app.use(express.json());
-// CORS - Cross Origin Resource Sharing
 app.use(cors());
 
 const prisma = new PrismaClient({
-  // Log all prisma client queries to the console
   log: ["query"],
 });
 
@@ -138,7 +110,6 @@ app.put("/join-event/:id", async (request, response) => {
 });
 
 /* GET USER name BY ID */
-//TODO: find a way to get the user name by id
 app.get("/user-name/:id", async (request, response) => {
   const userId: any = request.params.id;
   const userName = await prisma.user.findUniqueOrThrow({

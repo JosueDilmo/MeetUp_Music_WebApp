@@ -9,21 +9,20 @@ const TopNavBar = () => {
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user: any) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthUser(user.email);
-        console.log(user.email);
       } else {
         setAuthUser(null);
       }
     });
-    return () => listen();
+    return unsubscribe;
   }, []);
 
   const handleSignOut = () => {
     auth
       .signOut()
-      .then(() => console.log("Signed out"))
+      .then(() => alert("Signed out"))
       .catch((error) => console.log(error));
   };
 

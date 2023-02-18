@@ -13,7 +13,7 @@ const CreateEvent = (event: LatLngLiteral) => {
   const [eventCoordinates, setEventCoordinates] = useState<LatLngLiteral>();
 
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user: any) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthUser(user.uid);
         setEventCoordinates(event);
@@ -21,26 +21,32 @@ const CreateEvent = (event: LatLngLiteral) => {
         setAuthUser(null);
       }
     });
-    return () => listen();
+    return unsubscribe;
   }, []);
 
-  const createEvent = async () => {
-    await axios
-      .post(`http://localhost:3333/create-event/${authUser}`, {
-        hourStart: hourStart,
-        hourEnd: hourEnd,
-        latitude: eventCoordinates?.lat,
-        longitude: eventCoordinates?.lng,
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        window.location.reload();
-      });
+  const createEvent = async (e: any) => {
+    if (!authUser) {
+      alert("Please login to create an event");
+      e.preventDefault();
+      return;
+    } else {
+      await axios
+        .post(`http://localhost:3333/create-event/${authUser}`, {
+          hourStart: hourStart,
+          hourEnd: hourEnd,
+          latitude: eventCoordinates?.lat,
+          longitude: eventCoordinates?.lng,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          window.location.reload();
+        });
+    }
   };
 
   return (
@@ -52,7 +58,7 @@ const CreateEvent = (event: LatLngLiteral) => {
           <Dialog.Title className="text-3xl font-black">
             Create your event
           </Dialog.Title>
-          <form onSubmit={createEvent}>
+          <form>
             <div>
               <label htmlFor="hourStart">
                 Introduce the duration of the event:
@@ -75,8 +81,10 @@ const CreateEvent = (event: LatLngLiteral) => {
               </div>
             </div>
             <footer>
-              <Dialog.Close>Cancel</Dialog.Close>
-              <button type="submit">Start Busking</button>
+              <Dialog.Close className="p-1">Cancel</Dialog.Close>
+              <button onClick={(e) => createEvent(e)} className="p-1">
+                Start Busking
+              </button>
             </footer>
           </form>
         </Dialog.Content>

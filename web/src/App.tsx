@@ -13,10 +13,10 @@ function App() {
     <div>
       <TopNavBar />
       <h1 className="text-8xl text-white font-bold mx-auto flex flex-col items-center mt-12 mb-2">
-        IntMus
+        MeetUp
       </h1>
       <h2 className="text-4xl text-white font-light mx-auto flex flex-col items-center">
-        Share your music
+        Integrate with your community
       </h2>
       <div className="mt-6 space justify-center flex space-x-36">
         <button
@@ -28,7 +28,7 @@ function App() {
         <SignUp />
       </div>
       <div className="flex">
-        <div className="overflow-auto no-scrollbar h-[512px] w-auto mt-12 ml-auto flex items-center flex-col">
+        <div className="overflow-auto no-scrollbar h-[600px] w-auto mt-12 ml-auto flex items-center flex-col">
           <DisplayEvents />
         </div>
         <MapWithMarkers />

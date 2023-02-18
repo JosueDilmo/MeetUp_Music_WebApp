@@ -5,8 +5,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import axios from "axios";
 import GetUsername from "./GetUsername";
+import OnlineChat from "./OnlineChat";
 
-type eventsFromDB = {
+interface eventsFromDB {
   eventId: string;
   ownerId: string;
   joinedId: string[];
@@ -19,7 +20,7 @@ type eventsFromDB = {
     firstName: string;
     lastName: string;
   };
-};
+}
 
 const DisplayEvents = () => {
   const [events, setEvents] = useState<eventsFromDB[]>([]);
@@ -38,30 +39,36 @@ const DisplayEvents = () => {
   }, []);
 
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user: any) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthUser(user.uid);
       } else {
         setAuthUser(null);
       }
     });
-    return () => listen();
+    return unsubscribe;
   }, []);
 
-  const joinEvent = (eventId: string) => {
-    axios
-      .put(`http://localhost:3333/join-event/${eventId}`, {
-        userId: authUser,
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        window.location.reload();
-      });
+  const joinEvent = (e: any, eventId: string) => {
+    if (!authUser) {
+      alert("Please login to join an event");
+      e.preventDefault();
+      return;
+    } else {
+      axios
+        .put(`http://localhost:3333/join-event/${eventId}`, {
+          userId: authUser,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          window.location.reload();
+        });
+    }
   };
 
   return (
@@ -70,64 +77,42 @@ const DisplayEvents = () => {
         <Spinner />
       ) : (
         events.map((event) => (
-          <div key={event.eventId}>
-            <div className="break-inside relative flex flex-col justify-between space-y-3 text-sm rounded-xl p-4 mb-4 bg-slate-800 text-white">
-              <div className="flex flex-row items-center space-x-3">
-                <div className="flex flex-none items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polygon points="14 2 18 6 7 17 3 17 3 13 14 2" />
-                    <line x1="3" y1="22" x2="21" y2="22" />
-                  </svg>
-                </div>
-                <span className="text-base font-bold">
-                  {`${event.user.firstName} ${event.user.lastName}`}
-                </span>
-              </div>
+          <div key={event.eventId} className="w-full rounded-xl mb-8">
+            <div className="border-blue-700 border-2 w-full px-6 py-2 break-inside relative flex flex-col justify-between space-y-2 text-sm rounded-xl bg-slate-800 text-white">
+              <span className="text-base font-bold">
+                {`${event.user.firstName} ${event.user.lastName}`}
+              </span>
               <div>
                 <span className="font-bold">Artist in the event:</span>
-                <GetUsername {...event.joinedId} />
+                <div className="overflow-auto no-scrollbar h-[65px]">
+                  <GetUsername {...event.joinedId} />
+                </div>
               </div>
               <div>
                 <p className="font-bold">Latitude:</p> {event.latitude}
                 <p className="font-bold">Longitude:</p> {event.longitude}
               </div>
-              <div>
-                <p className="font-bold">Date:</p> {event.createdAt}
+              <div className="w-full">
+                <div className="flex flex-col content-between justify-center">
+                  <span className="font-bold">
+                    Start at:
+                    <span className="font-normal"> {event.hourStart}</span>
+                  </span>
+                  <span className="font-bold">
+                    Finish at:
+                    <span className="font-normal"> {event.hourEnd}</span>
+                  </span>
+                </div>
+                <span className="font-bold ">Date:</span> {event.createdAt}
               </div>
-              <div>
-                <p className="font-bold">Start at:</p> {event.hourStart}
-                <p className="font-bold">Finish at:</p> {event.hourEnd}
-              </div>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center w-full p-2 mr-2">
                 <button
-                  className="flex items-center justify-center text-xs font-medium rounded-full px-4 py-1 space-x-1 border-2 border-black bg-white hover:bg-black hover:text-white text-black dark:bg-slate-800 dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
-                  onClick={() => joinEvent(event.eventId)}
+                  className="mb-1 flex items-center justify-center text-xs font-medium rounded-full px-4 py-1 space-x-1 border-2 border-black bg-white hover:bg-black hover:text-white text-black dark:bg-slate-800 dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
+                  onClick={(e) => joinEvent(e, event.eventId)}
                 >
                   <span>Join busking</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h13M12 5l7 7-7 7" />
-                  </svg>
                 </button>
+                <OnlineChat {...event} />
               </div>
             </div>
           </div>

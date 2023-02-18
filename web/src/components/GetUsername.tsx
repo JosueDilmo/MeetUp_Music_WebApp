@@ -50,8 +50,10 @@ const GetUsername = (objectJoinedIds: JoinedStringObject) => {
       ) : (
         user.map((user) => {
           return (
-            <div key={user.id} className="">
-              {user.firstName} {user.lastName}
+            <div key={user.id}>
+              <div>
+                {user.firstName} {user.lastName}
+              </div>
             </div>
           );
         })

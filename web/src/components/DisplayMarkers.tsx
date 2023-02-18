@@ -13,18 +13,18 @@ import CreateEvent from "./CreateEvent";
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
-type eventsFromDB = {
+interface eventsFromDB {
   eventId: string;
   latitude: number;
   longitude: number;
-};
+}
 
 function DisplayMarkers() {
   const [markers, setMarkers] = useState<eventsFromDB[]>([]);
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState<LatLngLiteral>({ lat: 0, lng: 0 });
   const [open, setOpen] = useState(false);
-  const GoogleApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string;
+  const GoogleApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   // Get the events from the database
   useEffect(() => {
@@ -48,7 +48,6 @@ function DisplayMarkers() {
 
   // Load the map
   const { isLoaded } = useLoadScript({
-    //FIXME: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     googleMapsApiKey: GoogleApiKey,
   });
 
@@ -61,12 +60,12 @@ function DisplayMarkers() {
     <GoogleMap
       zoom={15}
       center={center}
-      mapContainerClassName="w-[60%] h-[512px] rounded-xl mt-12 mb-12 mx-auto"
+      mapContainerClassName="w-[60%] h-[600px] rounded-xl mt-12 mb-12 mx-auto"
       options={options}
       onClick={(event) => {
-        const coordinates = {
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng(),
+        const coordinates: LatLngLiteral = {
+          lat: event.latLng?.lat() as number,
+          lng: event.latLng?.lng() as number,
         };
         setEvent(coordinates);
         console.log(coordinates);

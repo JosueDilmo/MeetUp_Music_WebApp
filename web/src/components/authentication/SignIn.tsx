@@ -15,6 +15,7 @@ const SignIn = () => {
         //window.location.reload();
       })
       .catch((error) => {
+        alert("Please, check your credentials");
         console.log(error);
       });
   };

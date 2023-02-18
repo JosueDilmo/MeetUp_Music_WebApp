@@ -26,7 +26,7 @@ const SignUp = () => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         alert(
-          "User created successfully" +
+          "User created successfully " +
             userCredentials.user.email +
             " " +
             userCredentials.user.uid
