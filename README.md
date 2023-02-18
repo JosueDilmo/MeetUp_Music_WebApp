@@ -16,6 +16,6 @@ This module requires the learner to investigate, propose, design, implement, tes
 <br><br><br>
 
 
-# Interactive Music Web Application
+# Meet Up Music Web Application
 
 Focus in Busking
