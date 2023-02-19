@@ -1,7 +1,7 @@
 import "./styles/main.css";
 import TopNavBar from "./components/navigation/TopNavBar";
 import Footer from "./components/navigation/Footer";
-import MapWithMarkers from "./components/DisplayMarkers";
+import DisplayMarkers from "./components/DisplayMarkers";
 import DisplayEvents from "./components/DisplayEvents";
 import SignUp from "./components/authentication/SignUp";
 
@@ -31,7 +31,7 @@ function App() {
         <div className="overflow-auto no-scrollbar h-[600px] w-auto mt-12 ml-auto flex items-center flex-col">
           <DisplayEvents />
         </div>
-        <MapWithMarkers />
+        <DisplayMarkers />
       </div>
       <Footer />
     </div>

@@ -37,14 +37,12 @@ const CreateEvent = (event: LatLngLiteral) => {
           latitude: eventCoordinates?.lat,
           longitude: eventCoordinates?.lng,
         })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          alert("Event created successfully");
+          window.location.reload();
         })
         .catch((error) => {
           console.log(error);
-        })
-        .finally(() => {
-          window.location.reload();
         });
     }
   };

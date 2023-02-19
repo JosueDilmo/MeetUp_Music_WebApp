@@ -49,6 +49,7 @@ const OnlineChat = (event: eventsFromDB) => {
   const [loading, setLoading] = useState(true);
   const chatId = event.eventId;
   const joinedId = event?.joinedId;
+  const ownerId = event.ownerId;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: any) => {
@@ -74,17 +75,17 @@ const OnlineChat = (event: eventsFromDB) => {
 
   const openOnlineChat = (e: any) => {
     if (!authUserId) {
-      alert("Please login to interact with the events");
+      alert("Please login to interact with the event");
       e.preventDefault();
       return;
+    } else if (authUserId === ownerId) {
+      return true;
+    } else if (joinedId.includes(authUserId)) {
+      return true;
     } else if (!joinedId.includes(authUserId)) {
       alert("Please join the event to interact with other users");
       e.preventDefault();
       return;
-    } else if (joinedId.includes(authUserId)) {
-      return true;
-    } else {
-      e.preventDefault();
     }
   };
 
@@ -163,7 +164,6 @@ const OnlineChat = (event: eventsFromDB) => {
                 <button
                   className="font-bold p-2 text-blue-500 hover:text-green-600"
                   onClick={getUsername}
-                  type="submit"
                 >
                   Send
                 </button>

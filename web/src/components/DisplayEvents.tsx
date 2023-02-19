@@ -1,10 +1,10 @@
 import "../styles/main.css";
 import { useEffect, useState } from "react";
 import { Spinner } from "phosphor-react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, reload } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import axios from "axios";
-import GetUsername from "./GetUsername";
+import GetUsername from "./utils/GetUsername";
 import OnlineChat from "./OnlineChat";
 
 interface eventsFromDB {
@@ -59,14 +59,12 @@ const DisplayEvents = () => {
         .put(`http://localhost:3333/join-event/${eventId}`, {
           userId: authUser,
         })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          alert("You have joined the event");
+          window.location.reload();
         })
         .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          window.location.reload();
+          alert(error.response.data.message);
         });
     }
   };

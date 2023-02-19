@@ -68,7 +68,6 @@ function DisplayMarkers() {
           lng: event.latLng?.lng() as number,
         };
         setEvent(coordinates);
-        console.log(coordinates);
       }}
     >
       {loading ? (
@@ -87,7 +86,6 @@ function DisplayMarkers() {
         position={event}
         onClick={() => {
           setOpen(true);
-          console.log(event);
         }}
       />
       {/* Open InfoWindow when user clicks on the marker */}

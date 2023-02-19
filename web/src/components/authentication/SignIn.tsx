@@ -10,9 +10,8 @@ const SignIn = () => {
   const handgleSignIn = (event: any) => {
     event.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        alert("User logged in successfully " + userCredentials.user.email);
-        //window.location.reload();
+      .then(() => {
+        alert("User logged in successfully");
       })
       .catch((error) => {
         alert("Please, check your credentials");

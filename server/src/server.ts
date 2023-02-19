@@ -64,7 +64,6 @@ app.post("/create-event/:id", async (request, response) => {
   const userId: any = request.params.id;
   const { latitude, longitude, hourStart, hourEnd }: any = request.body;
 
-  //TODO: joinedId should be empty when creating a new event
   const createdEvent = await prisma.events.create({
     data: {
       ownerId: userId,
@@ -78,7 +77,6 @@ app.post("/create-event/:id", async (request, response) => {
 });
 
 // Route to join an event by id and add new user ID to joinedId keeping the previous ones
-//TODO: validate if the user is already in the event
 app.put("/join-event/:id", async (request, response) => {
   const eventId: any = request.params.id;
   const userId: any = request.body.userId;
@@ -89,18 +87,27 @@ app.put("/join-event/:id", async (request, response) => {
   if (!eventToJoin) {
     return response.status(404).json({ message: "Event not found" });
   }
+  if (eventToJoin.ownerId === userId) {
+    return response
+      .status(400)
+      .json({ message: "You can't join your own event" });
+  }
 
   if (eventToJoin.joinedId === null) {
     const updatedNullEvent = await prisma.events.update({
-      where: { eventId },
+      where: { eventId: eventToJoin.eventId },
       data: {
         joinedId: userId,
       },
     });
     return response.status(201).json(updatedNullEvent);
+  } else if (eventToJoin.joinedId.includes(userId)) {
+    return response
+      .status(400)
+      .json({ message: "You've already joined this event" });
   } else {
     const updatedEvent = await prisma.events.update({
-      where: { eventId },
+      where: { eventId: eventToJoin.eventId },
       data: {
         joinedId: userId + "," + eventToJoin.joinedId,
       },

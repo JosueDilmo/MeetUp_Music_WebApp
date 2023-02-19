@@ -25,12 +25,6 @@ const SignUp = () => {
     event.preventDefault();
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
-        alert(
-          "User created successfully " +
-            userCredentials.user.email +
-            " " +
-            userCredentials.user.uid
-        );
         createUserInDatabase(userCredentials.user.uid, event);
       })
       .catch((error) => {
@@ -46,9 +40,12 @@ const SignUp = () => {
         lastName: lastName,
         profession: profession,
       })
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+        alert(`User created successfully ${email}`);
         window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
