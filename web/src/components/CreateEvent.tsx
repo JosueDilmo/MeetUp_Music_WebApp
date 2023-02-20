@@ -11,12 +11,14 @@ const CreateEvent = (event: LatLngLiteral) => {
   const [hourEnd, setHourEnd] = useState("");
   const [authUser, setAuthUser] = useState(null);
   const [eventCoordinates, setEventCoordinates] = useState<LatLngLiteral>();
+  const [address, setAddress] = useState("");
+  const GoogleApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthUser(user.uid);
-        setEventCoordinates(event);
+        // setEventCoordinates(event);
       } else {
         setAuthUser(null);
       }
@@ -36,6 +38,7 @@ const CreateEvent = (event: LatLngLiteral) => {
           hourEnd: hourEnd,
           latitude: eventCoordinates?.lat,
           longitude: eventCoordinates?.lng,
+          address: address,
         })
         .then(() => {
           alert("Event created successfully");
@@ -46,6 +49,21 @@ const CreateEvent = (event: LatLngLiteral) => {
         });
     }
   };
+
+  const reverseGeocode = async () => {
+    await axios(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${event.lat},${event.lng}&key=${GoogleApiKey}`
+    )
+      .then((response) =>
+        setAddress(response.data.results[0].formatted_address)
+      )
+      .catch((error) => console.log(error));
+    setEventCoordinates(event);
+  };
+
+  useEffect(() => {
+    reverseGeocode();
+  }, [event]);
 
   return (
     <Dialog.Root>

@@ -13,6 +13,7 @@ interface eventsFromDB {
   joinedId: string[];
   latitude: number;
   longitude: number;
+  address: string;
   hourStart: number;
   hourEnd: number;
   createdAt: string;
@@ -89,6 +90,16 @@ const DisplayEvents = () => {
               <div>
                 <p className="font-bold">Latitude:</p> {event.latitude}
                 <p className="font-bold">Longitude:</p> {event.longitude}
+              </div>
+              <div>
+                <span className="font-bold">
+                  Location:{" "}
+                  <span className="font-normal">
+                    {event.address.split(",")[0] +
+                      "," +
+                      event.address.split(",")[1]}
+                  </span>
+                </span>
               </div>
               <div className="w-full">
                 <div className="flex flex-col content-between justify-center">

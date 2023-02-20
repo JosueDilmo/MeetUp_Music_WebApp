@@ -6,8 +6,8 @@ import DisplayEvents from "./components/DisplayEvents";
 import SignUp from "./components/authentication/SignUp";
 
 function App() {
-  // HARD way aka "correct" way
-  // Get the events from the database THEN pass to the components
+  // Get all information from the database [events/users]
+  // Get authentication from firebase [auth]
 
   return (
     <div>

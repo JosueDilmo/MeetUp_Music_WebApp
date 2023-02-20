@@ -10,9 +10,10 @@ CREATE TABLE "User" (
 CREATE TABLE "Events" (
     "eventId" TEXT NOT NULL PRIMARY KEY,
     "ownerId" TEXT NOT NULL,
-    "joinedId" TEXT NOT NULL,
+    "joinedId" TEXT,
     "latitude" REAL NOT NULL,
     "longitude" REAL NOT NULL,
+    "address" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "hourStart" INTEGER NOT NULL,
     "hourEnd" INTEGER NOT NULL,

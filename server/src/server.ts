@@ -20,6 +20,7 @@ app.get("/get-events", async (request, response) => {
       eventId: true,
       latitude: true,
       longitude: true,
+      address: true,
     },
   });
   return response.status(201).json(events);
@@ -34,6 +35,7 @@ app.get("/happening-now", async (request, response) => {
       joinedId: true,
       latitude: true,
       longitude: true,
+      address: true,
       hourStart: true,
       hourEnd: true,
       createdAt: true,
@@ -62,13 +64,15 @@ app.get("/happening-now", async (request, response) => {
 // Create a new event
 app.post("/create-event/:id", async (request, response) => {
   const userId: any = request.params.id;
-  const { latitude, longitude, hourStart, hourEnd }: any = request.body;
+  const { latitude, longitude, address, hourStart, hourEnd }: any =
+    request.body;
 
   const createdEvent = await prisma.events.create({
     data: {
       ownerId: userId,
       latitude: latitude,
       longitude: longitude,
+      address: address,
       hourStart: convertHourStringToMinutes(hourStart),
       hourEnd: convertHourStringToMinutes(hourEnd),
     },
