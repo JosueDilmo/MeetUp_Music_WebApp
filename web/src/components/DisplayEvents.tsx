@@ -88,8 +88,10 @@ const DisplayEvents = () => {
                 </div>
               </div>
               <div>
-                <p className="font-bold">Latitude:</p> {event.latitude}
-                <p className="font-bold">Longitude:</p> {event.longitude}
+                <p className="font-bold">Latitude:</p>{" "}
+                {event.latitude.toFixed(5)}
+                <p className="font-bold">Longitude:</p>{" "}
+                {event.longitude.toFixed(5)}
               </div>
               <div>
                 <span className="font-bold">

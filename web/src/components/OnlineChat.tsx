@@ -82,7 +82,7 @@ const OnlineChat = (event: eventsFromDB) => {
       return true;
     } else if (joinedId.includes(authUserId)) {
       return true;
-    } else if (!joinedId.includes(authUserId)) {
+    } /*(!joinedId.includes(authUserId))*/ else {
       alert("Please join the event to interact with other users");
       e.preventDefault();
       return;
@@ -145,11 +145,16 @@ const OnlineChat = (event: eventsFromDB) => {
           <Dialog.DialogPortal>
             <Dialog.Overlay className="bg-black/70 fixed inset-0" />
             <Dialog.Content className=" bg-gray-900 p-2 text-white fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl">
-              <div className="h-[600px] w-auto overflow-auto no-scrollbar p-10 place-items-center ">
+              <div className="h-[600px] w-[460px] overflow-auto no-scrollbar p-10 place-items-center ">
                 {oldMessages.map((message: any, index) => (
                   <div className="p-2 border-2 rounded-xl mb-3" key={index}>
-                    <span className="text-green-700">{message.username}:</span>
-                    <span className="ml-4">{message.text}</span>
+                    <span className="text-green-700">{message.username}</span>
+                    <div className="overflow-auto no-scrollbar ml-1 border-2 h-auto w-[290px]">
+                      {message.text}
+                    </div>
+                    <div className="flex justify-end">
+                      {message.createdAt.toString().split(" ")[4]}
+                    </div>
                   </div>
                 ))}
               </div>
