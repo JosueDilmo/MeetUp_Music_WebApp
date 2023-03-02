@@ -149,7 +149,7 @@ const OnlineChat = (event: eventsFromDB) => {
                 {oldMessages.map((message: any, index) => (
                   <div className="p-2 border-2 rounded-xl mb-3" key={index}>
                     <span className="text-green-700">{message.username}</span>
-                    <div className="overflow-auto no-scrollbar ml-1 border-2 h-auto w-[290px]">
+                    <div className="overflow-auto no-scrollbar p-2 h-auto w-[290px] break-words ">
                       {message.text}
                     </div>
                     <div className="flex justify-end">

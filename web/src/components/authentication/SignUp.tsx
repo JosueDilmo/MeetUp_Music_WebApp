@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { useState } from "react";
 import axios from "axios";
+import SignIn from "./SignIn";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -177,10 +178,12 @@ const SignUp = () => {
                 >
                   Sign up
                 </button>
-                <p className="justify-between inline-block mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">
-                  Already registered?
-                </p>
               </form>
+              <span className="justify-between inline-block mt-4 text-xs text-gray-500">
+                Already registered?
+              </span>
+
+              <SignIn />
             </div>
           </div>
         </Dialog.Content>

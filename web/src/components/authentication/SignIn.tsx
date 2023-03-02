@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { useState } from "react";
+import SignUp from "./SignUp";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         alert("User logged in successfully");
+        window.location.reload();
       })
       .catch((error) => {
         alert("Please, check your credentials");
@@ -23,7 +25,7 @@ const SignIn = () => {
     <Dialog.Root>
       <Dialog.Trigger
         type="button"
-        className="block py-2 pl-3 pr-4 text-white bg-blue-500 hover:text-white rounded md:bg-transparent md:text-blue-500 md:p-0"
+        className="block py-2 pl-3 pr-4 bg-blue-500 hover:text-black rounded md:bg-transparent md:text-blue-500 md:p-0"
       >
         Login
       </Dialog.Trigger>
@@ -69,12 +71,7 @@ const SignIn = () => {
                 </div>
                 <div className="text-center mt-12">
                   <span>Don't have an account? </span>
-                  <a
-                    href="#"
-                    className="text-md text-indigo-600 underline font-semibold hover:text-indigo-800"
-                  >
-                    Create one
-                  </a>
+                  <SignUp />
                 </div>
               </form>
             </div>
