@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { auth } from "../firebase/firebaseConfig";
+import { auth } from "../../firebase/firebaseConfig";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -18,7 +18,6 @@ const CreateEvent = (event: LatLngLiteral) => {
     const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthUser(user.uid);
-        // setEventCoordinates(event);
       } else {
         setAuthUser(null);
       }
@@ -71,23 +70,27 @@ const CreateEvent = (event: LatLngLiteral) => {
       <Dialog.Portal>
         <Dialog.Overlay className=" bg-black/60 inset-0 fixed" />
         <Dialog.Content className="bg-gray-900 text-white fixed py-8 px-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg">
-          <Dialog.Title className="text-3xl font-black">
-            Create your event
-          </Dialog.Title>
           <form>
-            <div>
-              <label htmlFor="hourStart">
-                Introduce the duration of the event:
-              </label>
-              <div className="text-black">
+            <span className="text-3xl font-black flex justify-center">
+              Create your event
+            </span>
+            <div className="p-2 ">
+              {/* <span className="flex justify-center">
+                Introduce the duration of the event
+              </span> */}
+              <div className="flex flex-col space-betwen justify-center p-4 ">
+                <span className="text-white">Start at: </span>
                 <input
+                  className="text-black rounded-md p-1"
                   id="hourStart"
                   type="time"
                   placeholder="Start"
                   onChange={(e) => setHourStart(e.target.value)}
                   required
                 ></input>
+                <span className="text-white mt-4">Finish at:</span>
                 <input
+                  className="text-black rounded-md p-1"
                   id="hourEnd"
                   type="time"
                   placeholder="End"
@@ -95,13 +98,18 @@ const CreateEvent = (event: LatLngLiteral) => {
                   required
                 ></input>
               </div>
+              <div className="flex justify-between items-center">
+                <Dialog.Close className="border-2 border-black p-1 rounded-lg bg-red-600 text-black font-bold">
+                  Cancel
+                </Dialog.Close>
+                <button
+                  onClick={(e) => createEvent(e)}
+                  className="border-2 border-black p-1 rounded-lg bg-green-600 text-black font-bold"
+                >
+                  Start
+                </button>
+              </div>
             </div>
-            <footer>
-              <Dialog.Close className="p-1">Cancel</Dialog.Close>
-              <button onClick={(e) => createEvent(e)} className="p-1">
-                Start Busking
-              </button>
-            </footer>
           </form>
         </Dialog.Content>
       </Dialog.Portal>

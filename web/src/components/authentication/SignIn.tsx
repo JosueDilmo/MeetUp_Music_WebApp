@@ -25,7 +25,7 @@ const SignIn = () => {
     <Dialog.Root>
       <Dialog.Trigger
         type="button"
-        className="block py-2 pl-3 pr-4 bg-blue-500 hover:text-black rounded md:bg-transparent md:text-blue-500 md:p-0"
+        className="block py-2 pl-3 pr-4 bg-blue-500 hover:text-gray-400 rounded md:bg-transparent md:text-blue-500 md:p-0"
       >
         Login
       </Dialog.Trigger>

@@ -8,7 +8,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Spinner } from "phosphor-react";
-import CreateEvent from "./CreateEvent";
+import CreateEvent from "./modals/CreateEvent";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;

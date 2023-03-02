@@ -82,16 +82,10 @@ const DisplayEvents = () => {
                 {`${event.user.firstName} ${event.user.lastName}`}
               </span>
               <div>
-                <span className="font-bold">Artist in the event:</span>
+                <span className="font-bold">Artists in the event:</span>
                 <div className="overflow-auto no-scrollbar h-[65px]">
                   <GetUsername {...event.joinedId} />
                 </div>
-              </div>
-              <div>
-                <p className="font-bold">Latitude:</p>{" "}
-                {event.latitude.toFixed(5)}
-                <p className="font-bold">Longitude:</p>{" "}
-                {event.longitude.toFixed(5)}
               </div>
               <div>
                 <span className="font-bold">
@@ -105,7 +99,7 @@ const DisplayEvents = () => {
               </div>
               <div className="w-full">
                 <div className="flex flex-col content-between justify-center">
-                  <span className="font-bold">
+                  <span className="font-bold mb-1">
                     Start at:
                     <span className="font-normal"> {event.hourStart}</span>
                   </span>
@@ -113,12 +107,14 @@ const DisplayEvents = () => {
                     Finish at:
                     <span className="font-normal"> {event.hourEnd}</span>
                   </span>
+                  <span className="font-bold mt-2">
+                    Date:<span className="font-normal"> {event.createdAt}</span>
+                  </span>
                 </div>
-                <span className="font-bold ">Date:</span> {event.createdAt}
               </div>
               <div className="flex justify-between items-center w-full p-2 mr-2">
                 <button
-                  className="mb-1 flex items-center justify-center text-xs font-medium rounded-full px-4 py-1 space-x-1 border-2 border-black bg-white hover:bg-black hover:text-white text-black dark:bg-slate-800 dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
+                  className="mb-1 flex items-center justify-center text-xs font-medium rounded-full px-4 py-1 space-x-1 border-2 border-green-700 bg-slate-800 hover:bg-white hover:text-black text-white"
                   onClick={(e) => joinEvent(e, event.eventId)}
                 >
                   <span>Join busking</span>

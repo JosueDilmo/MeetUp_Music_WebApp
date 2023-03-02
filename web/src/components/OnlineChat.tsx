@@ -82,7 +82,7 @@ const OnlineChat = (event: eventsFromDB) => {
       return true;
     } else if (joinedId.includes(authUserId)) {
       return true;
-    } /*(!joinedId.includes(authUserId))*/ else {
+    } else {
       alert("Please join the event to interact with other users");
       e.preventDefault();
       return;
@@ -137,7 +137,7 @@ const OnlineChat = (event: eventsFromDB) => {
         <>
           <Dialog.Trigger
             type="button"
-            className="mb-1 flex items-center justify-center text-xs font-medium rounded-full px-4 py-1 space-x-1 border-2 border-black bg-white hover:bg-black hover:text-white text-black dark:bg-slate-800 dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
+            className="mb-1 flex items-center justify-center text-xs font-medium rounded-full px-4 py-1 space-x-1 border-2 border-green-700 bg-slate-800 hover:bg-white hover:text-black text-white"
             onClick={(e) => openOnlineChat(e)}
           >
             Chat
