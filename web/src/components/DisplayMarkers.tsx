@@ -1,6 +1,7 @@
 import "../styles/main.css";
 import {
   GoogleMap,
+  InfoBox,
   InfoWindow,
   MarkerF,
   useLoadScript,
@@ -17,6 +18,7 @@ interface eventsFromDB {
   eventId: string;
   latitude: number;
   longitude: number;
+  address: string;
 }
 
 function DisplayMarkers() {
@@ -78,6 +80,7 @@ function DisplayMarkers() {
           <MarkerF
             key={marker.eventId}
             position={{ lat: marker.latitude, lng: marker.longitude }}
+            title={marker.address}
           />
         ))
       )}
@@ -87,6 +90,7 @@ function DisplayMarkers() {
         onClick={() => {
           setOpen(true);
         }}
+        title="Click to add event"
       />
       {/* Open InfoWindow when user clicks on the marker */}
       {open && (

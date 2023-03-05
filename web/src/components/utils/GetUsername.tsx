@@ -8,11 +8,11 @@ interface usersFromDB {
   lastName: string;
 }
 
-interface JoinedStringObject {
+interface joinedStringObject {
   [key: string]: string;
 }
 
-const GetUsername = (objectJoinedIds: JoinedStringObject) => {
+const GetUsername = (objectJoinedIds: joinedStringObject) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<usersFromDB[]>([]);
 

@@ -120,7 +120,7 @@ app.put("/join-event/:id", async (request, response) => {
   }
 });
 
-/* GET USER name BY ID */
+/* GET username BY ID */
 app.get("/user-name/:id", async (request, response) => {
   const userId: any = request.params.id;
   const userName = await prisma.user.findUniqueOrThrow({
@@ -148,6 +148,59 @@ app.post("/create-user/:id", async (request, response) => {
     },
   });
   return response.status(201).json(createdUser);
+});
+
+/* Edit User profile/ details */
+app.put("/update-user/:id", async (request, response) => {
+  const userId: any = request.params.id;
+  const { firstName, lastName, profession }: any = request.body;
+
+  const updatedUser = await prisma.user.update({
+    where: { userId },
+    data: {
+      firstName: firstName,
+      lastName: lastName,
+      profession: profession,
+    },
+  });
+
+  return response.status(201).json(updatedUser);
+});
+
+/* Delete events by ID */
+app.delete("/delete-event/:id", async (request, response) => {
+  const eventId: any = request.params.id;
+  const deletedEvent = await prisma.events.delete({
+    where: { eventId },
+  });
+  return response.status(201).json(deletedEvent);
+});
+
+/* GET all events created by a user */
+app.get("/user-events/:id", async (request, response) => {
+  const userId: any = request.params.id;
+  const userEvents = await prisma.events.findMany({
+    where: {
+      ownerId: userId,
+    },
+    select: {
+      eventId: true,
+      address: true,
+      hourStart: true,
+      hourEnd: true,
+      createdAt: true,
+    },
+  });
+  return response.status(201).json(
+    userEvents.map((event) => {
+      return {
+        ...event,
+        createdAt: event.createdAt.toLocaleDateString(),
+        hourStart: convertMinutesToHourString(event.hourStart),
+        hourEnd: convertMinutesToHourString(event.hourEnd),
+      };
+    })
+  );
 });
 
 app.listen(3333);
