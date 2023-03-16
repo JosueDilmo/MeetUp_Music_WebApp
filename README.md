@@ -71,6 +71,6 @@ Project intended as demonstration of set of skills.<br>
 
 Any request please email me at:<br>
 josuedilmo@gmail.com<br>
-24061@stuent.dorset-college.ie<br>
+24061@student.dorset-college.ie<br>
 
 Thank you.
